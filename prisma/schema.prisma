@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Setting {
+  id                 String   @id @default(cuid())
+  b2bApiKey          String?
+  b2bBaseUrl         String?
+  defaultDoctorId    String?
+  updatedAt          DateTime @updatedAt
+}
+
+model WalkinLog {
+  id                 String   @id @default(cuid())
+  patientName        String
+  phone              String?
+  symptoms           String?
+  trackingUrl        String?
+  uniqueLinkId       String?
+  tokenNumber        Int?
+  b2bQueueEntryId    String?
+  createdAt          DateTime @default(now())
+  status             String   @default("WAITING") // WAITING, COMPLETED, CANCELLED
+}
+
+model AppointmentLog {
+  id                 String   @id @default(cuid())
+  patientName        String
+  phone              String?
+  scheduledAt        DateTime
+  notes              String?
+  b2bAppointmentId   String?
+  createdAt          DateTime @default(now())
+  status             String   @default("SCHEDULED") // SCHEDULED, CANCELLED, ARRIVED
+}
